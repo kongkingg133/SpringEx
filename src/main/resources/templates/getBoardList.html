@@ -23,8 +23,8 @@
         <td th:text="${board.seq}"></td>
         <td th:text="${board.title}"></td>
         <td th:text="${board.writer}"></td>
-        <td th:text="${board.createDate}"></td>
-<!--        <td th:text="${#dates.format(board.createdate, 'yyy-MM-dd')}"></td>-->
+<!--        <td th:text="${board.createDate}"></td>-->
+        <td th:text="${#dates.format(board.createdate, 'yyy-MM-dd')}"></td>
         <td th:text="${board.cnt}"></td>
     </tr>
 </table>

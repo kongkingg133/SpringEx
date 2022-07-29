@@ -39,7 +39,7 @@ public class HelloController {
     public String account(@RequestParam("id1")String id, Model model) {
         //클라이언트에서 받아온 id1변수이름의 데이터를
         //RequestParam의 데이터로 연산작업
-        String abc = id + "안녕하세요"; 
+        String abc = id + "님 안녕하세요";
         //작업한 데이터를 model에 넣어서 클라이언트에 전송
         //model.addAttribute(Key, val) // value에는 배열, 객체도 아무거나 넣을 수 있음
         model.addAttribute("msg", abc);
