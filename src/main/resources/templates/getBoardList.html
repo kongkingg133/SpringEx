@@ -23,13 +23,14 @@
         <td th:text="${board.seq}"></td>
         <td th:text="${board.title}"></td>
         <td th:text="${board.writer}"></td>
-<!--        <td th:text="${board.createDate}"></td>-->
-        <td th:text="${#dates.format(board.createdate, 'yyy-MM-dd')}"></td>
+        <td th:text="${board.createDate}"></td>
         <td th:text="${board.cnt}"></td>
+<!--오류 뜨는 문구-->
+<!--        <td th:text="${#dates.format(board.createdate, 'yyy-MM-dd')}"></td>-->
     </tr>
 </table>
 <br>
-    <a th:href="insertBoard">새글 등록</a>
+<a th:href="insertBoard">새글 등록</a>
 
 </body>
 </html>
