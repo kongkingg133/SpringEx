@@ -11,6 +11,8 @@ import java.util.List;
 
 @Controller
 public class BoardController {
+
+    //클라이언트에서 서버로 무언가 데이터를 전송하기 위한 Mapping(@RequestMapping)
     @RequestMapping("/getBoardList")
     public String getBoardList(Model model){
         //List 타입으로 Board객체를 넣는 boardList변수명 선언
