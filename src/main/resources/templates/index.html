@@ -2,29 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-<!--    <link rel="favicon" href="/static/img/ico/favicon.ico">-->
+<!--    <link rel="shortcut icon" type="image/x-icon" href="/img/ico/impact_logo_20200301_icon_ver2.ico" />-->
+<!--    <link rel="stylesheet" type="text/css" href="/css/default.css">-->
     <title>Title</title>
 </head>
 <body>
-    hello world
-    <a href="/getBoardList">게시판!</a>
-    <a href="/hello">hello!</a>
-    <a href="/account">account!</a>
-    <a href="https://naver.com">naver</a>
-    <hr>
-    <!----------------->
-    <p th:text="${msg}"></p>
-    <hr>
-    Slime Game
-    <hr>
-    <h1>회원가입</h1>
-    <form method="POST" action="/account">
-<!--        <form method="POST" action="/index">-->
-        <!------input태그의 id1변수이름으로 데이터를 서버에 전달하고------>
-        <!------서버 model에서 받아온 id2변수이름으로 데이터를 html에 출력------>
-        <input type="text" name="id1" th:value="${id2}" />
-        <input type="submit" value="Click" />
-    </form>
-
+<h1 class="test">link test</h1>
+<a href="/getBoardList">게시판 연결</a>
+<a href="/hello">hello @getMapping 연결</a>
+<a href="https://naver.com">naver 웹사이트 연결</a>
+<hr>
+<h1>회원가입 index page test</h1>
+<p th:text="${msg}"></p>
+<form method="POST" action="/index">
+    <!------input태그의 id1변수이름으로 데이터를 서버에 전달하고------>
+    <!------서버 model에서 받아온 id2변수이름으로 데이터를 html에 출력------>
+    <input type="text" name="id1" th:value="${id2}" />
+    <input type="submit" value="Click" />
+</form>
+<hr>
+<!----------------->
+<h1>API Server test</h1>
+<a href="/slimeLand?input_data=junseokSlime">slimeLand API data!</a>
 </body>
 </html>
