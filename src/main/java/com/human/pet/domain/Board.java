@@ -1,12 +1,10 @@
 package com.human.pet.domain;
 
 //외장 라이브러리 (gradle로 다운로드한 롬북이 외장 라이브러리)
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
 import java.util.Date;
 
 //롬북에 있는 Getter라는 메서드를 통해
@@ -16,12 +14,14 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-@Entity
+/*잠시 없앰
+@Entity*/
 public class Board {
 
     //식별 필드
+    /*잠시 없앰
     @Id
-    @GeneratedValue
+    @GeneratedValue*/
     private Long seq;
     private String title;
 //    @Column(updatable = false)

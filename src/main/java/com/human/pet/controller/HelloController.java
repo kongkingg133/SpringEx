@@ -35,7 +35,7 @@ public class HelloController {
 
     //호출하는 클라이언트의 정보를 가져다가 서버(controller)에 전달 해주는 매핑
     //클라이언트가 요청 한 정보를 가져오는 어노테이션
-    @RequestMapping(value="account", method = RequestMethod.POST)
+    @RequestMapping(value="hello", method = RequestMethod.POST)
     public String account(@RequestParam("id1")String id, Model model) {
         //클라이언트에서 받아온 id1변수이름의 데이터를
         //RequestParam의 데이터로 연산작업

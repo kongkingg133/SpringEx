@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-//내장 라이브러리 호출(import)
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +18,7 @@ import java.util.List;
 public class BoardController {
 
     //step1. 일반 문자열 변수 사용
+    final static String T1 = "t1";
     static String title_string_static = "";
     static String writer_string_static = "";
     static String content_string_static = "";
@@ -32,6 +32,12 @@ public class BoardController {
     static ArrayList<Board> board_array = new ArrayList<Board>();
     static int count = 0;
 
+    @GetMapping("/t1")
+    public String gett1(Model model) {
+
+        return T1;
+    }
+
     //@GetMapping 또는@PostMapping은 @RequestMapping의 자식 클래스이다
     //RequestMapping의 기능을 모두 쓸 수 있다
     //자식클래스 어노테이션이 아닌 부모클래스 어노테이션을 쓰는 이유는 기능의 한정을 통해서
@@ -40,14 +46,16 @@ public class BoardController {
     public String insertBoard() {
         return "insertBoard";
     }
+
+
     //[클라이언트]html form태그의 method속성의 값인 post를 인식하여 아래의
     //@PostMapping에 연결
     @PostMapping("insertBoard")
     public String insertBoard(
-            @RequestParam("title")String title,
-            @RequestParam("writer")String writer,
-            @RequestParam("content")String content,
-            Model model) {
+            @RequestParam("title") String title,
+            @RequestParam("writer") String writer,
+            @RequestParam("content") String content
+    ) {
 
         title_string_static = title;
         writer_string_static = writer;
@@ -72,27 +80,32 @@ public class BoardController {
         //redirect:getBoardList : getBoardList 페이지로 이동
         return "redirect:getBoardList";
     }
+
     //@어노테이션은 메서드 혹은 클래스에 속성, 정의를 해서 스프링이나 자바에서 찾기 쉽도록 해주는 선언부
     //예) @Override 은 부모 메서드를 재정의하여 사용한다고 자바나 스프링에게 속성 명시
     //@RequestParam : [클라이언트]에서 string문자열을 [서버]에 전달하는 매개변수 선언
     //@RequestParam("title")String title에서 ("title")은 [클라이언트]의 name이라는 속성로써
     //key값을 매개변수를 전달
     @RequestMapping("/getBoard")
-    public String getBoard(@RequestParam("userRole") String userRole,
-                           @RequestParam("userId") String userId,
-                           @RequestParam("title") String title,
-                           @RequestParam("writer") String writer,
-                           @RequestParam("content") String content,
-                           @RequestParam("createDate") String createDate,
-                           @RequestParam("cnt") String cnt,
-                           Model model) {
+    public String getBoard(
+//                         @RequestParam("userRole") String userRole,
+//                         @RequestParam("userId") String userId,
+            @RequestParam("seq") String seq,
+            @RequestParam("title") String title,
+            @RequestParam("writer") String writer,
+            @RequestParam("content") String content,
+            @RequestParam("createDate") String createDate,
+            @RequestParam("cnt") String cnt,
+            Model model) {
+
+        model.addAttribute("seq", seq);
         model.addAttribute("title", title);
         model.addAttribute("writer", writer);
         model.addAttribute("content", content);
         model.addAttribute("createDate", createDate);
         model.addAttribute("cnt", cnt);
-        model.addAttribute("userId", userId);
-        model.addAttribute("userRole", userRole);
+//        model.addAttribute("userId", userId);
+//        model.addAttribute("userRole", userRole);
         return "getBoard";
     }
 
@@ -110,23 +123,23 @@ public class BoardController {
 
         //title_array.size()로 게시판 글이 1개이상일 경우에만 model에 데이터 입력하여
         //[클라이언트]에 전달
-        if (title_array.size() > 0) {
-            for(int i=0; i<title_array.size(); i++) {
+        if (board_array.size() > 0) {
+            for (int i = 0; i < board_array.size(); i++) {
                 //Board 클래스로 board인스턴스 생성
                 Board board = new Board();
                 //롬북으로 자동생성된 seter 메서드로 데이터 입력
-                board.setSeq(new Long(i));
+                board.setSeq(board_array.get(i).getSeq());
                 //매개변수 title_array.get(i)은
                 //BoardController의 필드인
                 //title_array, writer_array, content_array의
                 //값을 순회하여 출력 (get(i));
                 //board.setter를 통해서 board객체에 데이터 입력
-                board.setTitle(title_array.get(i));
-                board.setWriter(writer_array.get(i));
-                board.setContent(content_array.get(i));
+                board.setTitle(board_array.get(i).getTitle());
+                board.setWriter(board_array.get(i).getWriter());
+                board.setContent(board_array.get(i).getContent());
                 //내장 클래스인 java.util.Date 객체로 시간 데이터 출력
-                board.setCreateDate(new Date());
-                board.setCnt(0L);
+                board.setCreateDate(board_array.get(i).getCreateDate());
+                board.setCnt(board_array.get(i).getCnt());
                 //boardList배열에 board객체 넣기(for문 10번 도니까 board객체 10개 넣기)
                 boardList.add(board);
             }
@@ -140,8 +153,49 @@ public class BoardController {
         //디서패처서블릿이 뷰 리졸버를 찾아서 연결해 줍니다.
         //viewResolver
         //return getBoardList라는 문자열로 templates에 있는 같은 이름에 html파일을 찾는다.
+
         return "getBoardList";
     }
 
+    @GetMapping("deleteBoard")
+    public String deleteBoard(@RequestParam("seq") String seq) {
 
+        //seq매개변수 (getBoard.html에서 받아옴)로 board_array 배열에서
+        //.getSeq로 같은 index를 찾아
+        //board_arrav에 있는 board객체 삭제 >> 원하는 게시글 삭제
+
+        for (int i = 0; i < board_array.size(); i++) {
+//                board_array.get(i).getSeq() : board_array의 i번째 객체를 찾아서 getSeq()메서드를 통해 seq필드값 가져오기
+//                equals()메서드를 통해서 매개변수 seq값과 비교 (참조 타입이므로)
+//                seq 타입은 Long입니다, 소수점있는 데이터(실수)이므로 매개변수 seq(String)과 같은 타입이 아니므로 비교 불가
+//                board_array.get(i).getSeq()의 값 Long을 String으로 변환 = Long.toString()
+            if (Long.toString(board_array.get(i).getSeq()).equals(seq)) {
+//                    board_array의 i번째 객체 삭제
+                board_array.remove(i);
+            }
+        }
+        //seq매개변수 (getBoard.html에서 받아옴)로 board_array 배열에서
+        //.getSeq로 같은 index를 찾아
+        //board_array에 있는 board객체 삭제 >> 원하는 게시글 삭제
+        return "redirect:getBoardList";
     }
+
+    //Post방식으로 [클라이언트]에서 [서버]로 맵핑
+    @PostMapping("updateBoard")
+    public String updateBoard(
+            //HTML에서 name속성을 가진 값을 매개변수 String seq에 할당 = @RequestParam("seq")
+            @RequestParam("seq") String seq,
+            @RequestParam("title") String title,
+            @RequestParam("content") String content
+    ){
+        //board_array배열을 순회하여 board객체의 seq필드값을 매개변수 seq와 비교하여 true값 찾기
+        for (int i = 0; i < board_array.size(); i++) {
+            if (Long.toString(board_array.get(i).getSeq()).equals(seq)) {
+                //setTile과 같은 setter로 데이터 변경
+                board_array.get(i).setTitle(title);
+                board_array.get(i).setContent(content);
+            }
+        }
+        return "redirect:getBoardList";
+    }
+}
