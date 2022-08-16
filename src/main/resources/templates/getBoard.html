@@ -3,44 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <title>게시글 상세</title>
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet" type="text/css" />
 </head>
-<body th:align="center">
-<h1>게시글 상세</h1>
+<body>
 
+<div class="container container-md">
 <form action="updateBoard" method="post">
     <input name="seq" type="hidden" th:value="${seq}">
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
-    <tr>
-        <td bgcolor="orange" th:text="제목" width="80"></th>
-        <!--
-            [서버]에서 java의 데이터를 [클라이언트]html문서에 값을 할당해주는 문법${title}
-        -->
-        <th><input name="title" type="text" th:value="${title}"></th>
-    </tr>
-    <tr>
-        <td bgcolor="orange" th:text="작성자"></th>
-        <td th:text="${writer}"></td>
-    </tr>
-    <tr>
-        <td bgcolor="orange" th:text="내용"></td>
-        <td><textarea name="content" th:text="${content}" cols="40" rows="10"></textarea></td>
-    </tr>
-    <tr>
-        <td bgcolor="orange" th:text="등록일"></td>
-        <td th:text="${createDate}"></td>
-    </tr>
-    <tr>
-        <td bgcolor="orange" th:text="조회수"></td>
-        <td th:text="${cnt}"></td>
-    </tr>
-    <tr>
-        <td colspan="2" align="center">
-            <input type="submit" value="게시글 수정">
-        </td>
-    </tr>
-</table>
+    <table class="table table-striped" th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
+        <tr>
+            <td th:text="분류" width="80"></td>
+            <th align="left"><!--<input name="category" type="text" th:value="${category}">-->
+                <select name="category" title="2">
+                    <option value="자유">자유</option>
+                    <option value="상품">상품</option>
+                    <option value="문의사항">문의사항</option>
+                </select>
+            </th>
+        </tr>
+        <tr>
+            <td th:text="제목" width="80"></td>
+            <!--
+                [서버]에서 java의 데이터를 [클라이언트]html문서에 값을 할당해주는 문법${title}
+            -->
+            <th><input name="title" type="text" th:value="${title}" size="35"></th>
+        </tr>
+        <tr>
+            <td th:text="작성자"></td>
+            <td th:text="${writer}"></td>
+        </tr>
+        <tr>
+            <td th:text="내용"></td>
+            <td><textarea name="content" th:text="${content}" cols="40" rows="10"></textarea></td>
+        </tr>
+        <tr>
+            <td th:text="등록일"></td>
+            <td th:text="${createDate}"></td>
+        </tr>
+        <tr>
+            <td th:text="조회수"></td>
+            <td th:text="${cnt}"></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" value="게시글 수정">
+            </td>
+        </tr>
+    </table>
 </form>
-<a th:href="@{/getBoardList}">글목록</a>
-<a th:href="@{/deleteBoard(seq=${seq})}">글삭제</a>
+<form th:action="insertComment" method="post">
+    <table class="table table-striped" th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
+        <tr>
+            <td th:text="댓글입력" th:width="80"></td>
+            <td><textarea name="comment"  size="40"></textarea></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" value="댓글등록"></td>
+        </tr>
+    </table>
+    <table class="table table-striped" th:align="center" border="1" th:cellpadding="0" th:cellspacing="0"  >
+        <tr>
+            <td th:text="댓글번호" th:width="80" ></td>
+            <td th:text="댓글" ></td>
+
+        </tr>
+        <tr th:each = "comment : ${comment_array}">
+            <td th:text="${comment.seq}"></td>
+            <td th:text = "${comment.comment1}"></td>
+        </tr>
+    </table>
+</form>
+<a class="btn btn-secondary float-right" th:href="@{/getBoardList}">글목록</a>
+<a class="btn btn-secondary float-right" th:href="@{/deleteBoard(seq=${seq})}">글삭제</a>
+</div>
 </body>
+
 </html>

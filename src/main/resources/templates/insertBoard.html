@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>새글등록</title>
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet" type="text/css" />
 </head>
 <body th:align="center">
 <h1>게시글 등록</h1>
@@ -13,18 +14,28 @@
     [서버]컨트롤러에서는 get방식 받는 것과 post방식으로 받는 것을 구분할 수 있습니다
 -->
 <form th:action="insertBoard" method="post">
-    <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
+    <table class="table table-striped "  th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
         <tr>
-            <td bgcolor="orange" th:text="제목" width="80"></td>
+            <td th:text="분류" width="80"></td>
+            <td align="left"><!--<input name="category" type="text" size="10">-->
+                <select name="category" title="분류유형선택">
+                    <option value="자유">자유</option>
+                    <option value="상품">상품</option>
+                    <option value="문의사항">문의사항</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="제목" width="80"></td>
             <!--[클라이언트]name="title" 은 [서버]에서 데이터 매개변수를 받기 위한 변수명(key-->
             <td><input name="title" type="text" size="50"></td>
         </tr>
         <tr>
-            <td bgcolor="orange" th:text="작성자" width="80"></td>
+            <td th:text="작성자" width="80"></td>
             <td><input name="writer" type="text" size="10"></td>
         </tr>
         <tr>
-            <td bgcolor="orange" th:text="내용" width="80"></td>
+            <td th:text="내용" width="80"></td>
             <td><textarea name="content" cols="50" rows="10"></textarea>
         </tr>
         <tr>
@@ -33,7 +44,8 @@
             </td>
         </tr>
     </table>
+    <a class="btn btn-secondary float-right" th:href="@{/getBoardList}">글목록</a>
 </form>
-<a th:href="@{/getBoardList}">글목록</a>
+
 </body>
 </html>

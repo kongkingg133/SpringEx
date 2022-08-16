@@ -4,43 +4,59 @@
 <head>
     <meta charset="UTF-8">
     <title>게시 글 목록</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Type" content="/text/html; charset=UTF-8">
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet" type="text/css" />
 </head>
 <!--<p class="test">test color</p>-->
 <body th:align="center">
-<h1>게시글 목록</h1>
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+<nav class="navbar navbar-light bg-dark">
+    <div class="container-fluid">
+        <a class="text-white" >게시판</a>
+        <form class="d-flex">
+            <input class = "form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<div class = "container " >
+<table class="table table-striped">
     <tr>
-        <th bgcolor="orange" width="100">번호</th>
-        <th bgcolor="orange" width="200">제목</th>
-        <th bgcolor="orange" width="150">작성자</th>
-        <th bgcolor="orange" width="150">등록일</th>
-        <th bgcolor="orange" width="100">조회수</th>
+        <th>번호</th>
+        <th>분류</th>
+        <th>제목</th>
+        <th>내용</th>
+        <th>작성자</th>
+        <th>등록일</th>
+        <th>조회수</th>
     </tr>
     <!--model에 있는 데이터를 타임리프는 html에 뿌려주게 되고, 순수한 html파일로 만들어서 톰캣에 전달-->
     <!--    each : for문-->
     <!--    모델에 있는 boardList 배열을 순회해서 board라는 객체를 하나씩 출력 (유사 : 향상된 for문-->
-    <tr th:each="board :${boardList}">
+    <tr class="" th:each="board :${boardList}">
         <!--        <td th:text="${state.count}"></td>-->
         <td th:text="${board.seq}"></td>
+        <td th:text="${board.category}"></td>
         <!--
         a태그를 사용하여 링크를 만들고,
         @{/getBoard로 controller에 mapping 주소를 직시
         [HTML(클라이언트)]seq=${board.seq} 에서 [JAVA(서버)]@RequestParam으로 매개변수 전달
         seq(변수명) = ${board.seq}(HTML(타임리프)에서의 데이터(클라이언트)
         -->
-        <td> <a th:href="@{/getBoard(
+        <td><a th:href="@{/getBoard(
                                 seq=${board.seq},
+                                category=${board.category},
                                 userId='userIdTeste',
                                 userRole='userIdRole',
                                 title=${board.title},
-
                                 writer=${board.writer},
                                 content=${board.content},
                                 createDate=${board.createDate},
                                 cnt=${board.cnt}
                                 )}"
-                th:text="${board.title}"></a></td>
+            th:text="${board.title}"></a>
+        </td>
+
+        <td th:text="${board.content.length() < 20 ? board.content : board.content.substring(0,20)}"></td>
         <td th:text="${board.writer}"></td>
         <!--
             dates.format = 날짜를 일정형식으로 바꿔주는 포맷팅
@@ -49,6 +65,8 @@
         <td th:text="${board.cnt}"></td>
     </tr>
 </table>
-<a th:href="@{/insertBoard}">글등록</a>
+    <a class="btn btn-secondary border-secondary float-right " th:href="@{/insertBoard}">글등록</a>
+</div>
+
 </body>
 </html>
